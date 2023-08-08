@@ -1,0 +1,23 @@
+import PropTypes from "prop-types";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { getDataStatus, loadUsersList } from "../../../store/users";
+
+const UserLoader = ({ children }) => {
+    const dispatch = useDispatch();
+    const dataStatus = useSelector(getDataStatus());
+
+    useEffect(() => {
+        if (!dataStatus) dispatch(loadUsersList());
+    }, [dataStatus]);
+    if (!dataStatus) return "Loading...";
+    return children;
+};
+
+UserLoader.propTypes = {
+    children: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.node),
+        PropTypes.node
+    ])
+};
+export default UserLoader;
